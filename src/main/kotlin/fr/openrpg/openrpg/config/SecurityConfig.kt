@@ -15,11 +15,7 @@ import reactor.core.publisher.Mono
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-class SecurityConfig {
-    lateinit var authenticationManager: AuthenticationManager
-
-    lateinit var securityContextRepository: SecurityContextRepository
-
+class SecurityConfig(private val authenticationManager: AuthenticationManager, private val securityContextRepository: SecurityContextRepository) {
     @Bean
     fun securitygWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
