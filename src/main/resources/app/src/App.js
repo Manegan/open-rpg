@@ -1,21 +1,26 @@
 import React from 'react';
-import './App.css';
-import {Link, BrowserRouter as Router, Route} from "react-router-dom";
-import Home from "./components/Home";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 
-function App() {
-    return (
-        <Router>
-            <div className="container-fluid">
-                <ul className={"nav"}>
-                    <li className={"nav-item"}>
-                        <Link to="/" className={"nav-link"}>Home</Link>
-                    </li>
-                </ul>
-                <Route path="/" exact component={Home}/>
-            </div>
-        </Router>
-    );
+import "./App.css";
+
+import {connect} from "react-redux";
+
+import Home from "./components/Home";
+import CreateAccount from "./components/CreateAccount";
+import Navbar from "./components/Navbar";
+
+class App extends React.Component() {
+    render() {
+        return (
+            <Router>
+                <div className="container-fluid">
+                    <Navbar/>
+                    <Route path="/" exact component={Home}/>
+                    <Route path="/create-account" exact component={CreateAccount}/>
+                </div>
+            </Router>
+        );
+    }
 }
 
-export default App;
+export default connect()(App);

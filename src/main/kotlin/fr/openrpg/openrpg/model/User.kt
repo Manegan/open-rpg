@@ -13,9 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails
 data class User(private var username: String?) : UserDetails {
     private var password: String? = null
 
-    private val enabled: Boolean? = null
+    private var enabled: Boolean? = null
 
-    private val roles: List<Role>? = null
+    private var roles: List<Role>? = null
 
     override fun getUsername(): String? {
         return username
@@ -57,5 +57,9 @@ data class User(private var username: String?) : UserDetails {
 
     fun getRoles(): List<Role>? {
         return roles
+    }
+
+    fun setRoles(roles: List<Role>?) {
+        this.roles = roles
     }
 }

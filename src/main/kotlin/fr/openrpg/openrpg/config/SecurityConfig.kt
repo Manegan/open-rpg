@@ -24,7 +24,8 @@ class SecurityConfig(private val authenticationManager: AuthenticationManager, p
                         Mono.fromRunnable { swe.response.statusCode = HttpStatus.UNAUTHORIZED }
                 } .accessDeniedHandler { swe, _ ->
                         Mono.fromRunnable { swe.response.statusCode = HttpStatus.FORBIDDEN }
-                }.and()
+                }
+            .and()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
@@ -35,8 +36,10 @@ class SecurityConfig(private val authenticationManager: AuthenticationManager, p
                 .pathMatchers(HttpMethod.GET, "/").permitAll()
                 .pathMatchers(HttpMethod.GET, "/static/**").permitAll()
                 .pathMatchers(HttpMethod.GET, "/*.(json,js,ico)").permitAll()
+                .pathMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .pathMatchers("/login").permitAll()
                 .anyExchange().authenticated()
-                .and().build()
+            .and()
+                .build()
     }
 }

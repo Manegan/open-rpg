@@ -37,12 +37,12 @@ class JWTUtil : Serializable {
     }
 
     fun generateToken(user: User): String {
-        val claims = HashMap<String, Any>()
-        claims["role"] = user.getRoles() as Any
+        val claims = HashMap<String, Any?>()
+        claims["role"] = user.getRoles()
         return doGenerateToken(claims, user.username)
     }
 
-    private fun doGenerateToken(claims: Map<String, Any>, username: String?): String {
+    private fun doGenerateToken(claims: Map<String, Any?>, username: String?): String {
         val expirationTimeLong = java.lang.Long.parseLong(expirationTime!!) //in second
 
         val createdDate = Date()
