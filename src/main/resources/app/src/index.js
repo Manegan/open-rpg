@@ -4,14 +4,17 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createStore } from 'redux';
+import {applyMiddleware, createStore} from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from "react-redux";
 
-import reducers from 'redux/reducers'
+import reducers from './redux/reducers'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-const store = createStore(reducers);
+const store = createStore(reducers, applyMiddleware(thunk));
+
+store.subscribe(() => console.log(store.getState()));
 
 ReactDOM.render(
     <Provider store={store}>

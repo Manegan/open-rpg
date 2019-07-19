@@ -9,5 +9,9 @@ module.exports = {
         paths.appIndexJs = path.resolve(__dirname, 'src/main/resources/app/src/index.js');
         paths.appSrc = path.resolve(__dirname, 'src/main/resources/app/src');
         return paths;
+    },
+    dev: function (dev, env) {
+        console.log(dev);
+        return dev;
     }
 };
