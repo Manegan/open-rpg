@@ -29,6 +29,7 @@ export default function (state = initialState, action) {
         }
         case DISCONNECTED: {
             return Object.assign({}, state, {
+                username: "",
                 isAuthenticated: false,
                 isAuthenticating: false,
                 token: null

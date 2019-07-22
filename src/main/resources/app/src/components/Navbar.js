@@ -7,7 +7,6 @@ class Navbar extends React.Component {
 
     constructor(props) {
         super(props);
-        this.props = props;
     }
 
     disconnect() {
@@ -28,13 +27,12 @@ class Navbar extends React.Component {
             return <Link to="/login" className="nav-link">Login</Link>;
         }
         let username = this.props.username;
-        return (<div>
-            Hello, {username}!&nbsp;
+        return [
+            <span>Hello, {username}!&nbsp;</span>,
             <button type="button"
                     className="btn btn-primary"
                     onClick={this.disconnect.bind(this)}>Disconnect
-            </button>
-        </div>);
+            </button>];
     }
 
     render() {

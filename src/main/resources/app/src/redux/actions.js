@@ -47,8 +47,14 @@ export function login(user) {
                 },
                 body: JSON.stringify(user)
             })
-            .then(response => response.json(), error => console.log("An error has occured", error))
-            .then(json => dispatch(completeConnection(json.body.token)))
+            .then(response => {
+                if (response.status === 200) {
+                    toast("Successfully logged in.", {type: toast.TYPE.SUCCESS});
+                    return response.json();
+                }
+                toast("Wrong username or password.", {type: toast.TYPE.ERROR})
+            }, error => toast("An error occurred.", {type: toast.TYPE.ERROR}))
+            .then(json => dispatch(completeConnection(json.token)))
             .catch(err => console.log(err));
     }
 }
@@ -67,18 +73,13 @@ export function createUser(user) {
                 body: JSON.stringify(user)
             })
             .then(response => {
-                if (response.status == 200) {
-                    toast("User " + user.username + " created", {type: toast.TYPE.SUCCESS});
+                if (response.status === 200) {
+                    toast("User " + user.username + " created.", {type: toast.TYPE.SUCCESS});
                     return response.json();
                 }
-                toast("User " + user.username + " already exist", {type: toast.TYPE.ERROR});
-            },
-                error => {
-                console.log("An error has occured", error)
-            })
-            .then(response => {
-                dispatch(userCreated(response.body))
-            })
+                toast("User " + user.username + " already exist.", {type: toast.TYPE.ERROR});
+            }, error => toast("An error occurred.", {type: toast.TYPE.ERROR}))
+            .then(response => dispatch(userCreated(response.body)))
             .catch(err => console.log(err));
     }
 }
