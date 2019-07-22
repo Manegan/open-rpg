@@ -8,38 +8,27 @@ class Login extends React.Component {
         super();
         this.props = props;
         this.state = {
-            form: {
-                username: null,
-                password: null
-            }
+            username: "",
+            password: ""
         }
     }
 
     login(e) {
         e.preventDefault();
-        this.props.login(this.state.form);
+        this.props.login({
+            username: this.state.username,
+            password: this.state.password
+        });
         this.setState({
-            form: {
-                username: null,
-                password: null
-            }
+            username: "",
+            password: ""
         })
-    }
-
-    updateUsername(e) {
-        let state = this.state;
-        state.form.username = e.target.value;
-    }
-
-    updatePassword(e) {
-        let state = this.state;
-        state.form.password = e.target.value;
     }
 
     render() {
         return (
         <div className="container-fluid">
-            <div className="card">
+            <div className="card w-50 m-auto shadow">
                 <div className="card-header">Login</div>
                 <div className="card-body">
                     <form>
@@ -49,7 +38,8 @@ class Login extends React.Component {
                                    id="inputUsername"
                                    className="form-control"
                                    name="username"
-                                   onChange={this.updateUsername.bind(this)}/>
+                                   value={this.state.username}
+                                   onChange={(e) => this.setState({username: e.target.value})}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="inputPassword">Password</label>
@@ -57,11 +47,13 @@ class Login extends React.Component {
                                    id="inputPassword"
                                    className="form-control"
                                    name="password"
-                                   onChange={this.updatePassword.bind(this)}/>
+                                   value={this.state.password}
+                                   onChange={(e) => this.setState({password: e.target.value})}/>
                         </div>
                         <button type="button" className="btn btn-primary"
                                 onClick={this.login.bind(this)}
-                                onSubmit={e => e.preventDefault()}>Submit</button>
+                                onSubmit={e => e.preventDefault()}
+                                disabled={this.state.username === "" || this.state.password === ""}>Submit</button>
                     </form>
                 </div>
             </div>

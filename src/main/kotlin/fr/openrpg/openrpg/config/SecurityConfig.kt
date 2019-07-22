@@ -14,12 +14,14 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsWebFilter
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
+import org.springframework.web.reactive.config.CorsRegistry
+import org.springframework.web.reactive.config.WebFluxConfigurer
 import reactor.core.publisher.Mono
 
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-class SecurityConfig(private val authenticationManager: AuthenticationManager, private val securityContextRepository: SecurityContextRepository) {
+class SecurityConfig(private val authenticationManager: AuthenticationManager, private val securityContextRepository: SecurityContextRepository): WebFluxConfigurer {
     @Bean
     fun securitygWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
@@ -47,16 +49,10 @@ class SecurityConfig(private val authenticationManager: AuthenticationManager, p
                 .build()
     }
 
-    @Bean
     @Profile("local")
-    fun corsWebFilter(): CorsWebFilter {
-        val config = CorsConfiguration()
-
-        val source = UrlBasedCorsConfigurationSource()
-        if (config.allowedOrigins != null && !config.allowedOrigins!!.isEmpty()) {
-            source.registerCorsConfiguration("/api/**", config)
-        }
-
-        return CorsWebFilter(source)
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("*")
     }
 }

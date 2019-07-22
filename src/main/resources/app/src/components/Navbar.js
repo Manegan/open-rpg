@@ -11,7 +11,7 @@ class Navbar extends React.Component {
 
     render() {
         return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light row">
+            <nav className="navbar navbar-expand-lg navbar-light bg-light row shadow-sm">
                 <a className="navbar-brand" href="#">OpenRpg</a>
                 <div className="collapse navbar-collapse">
                     <ul className="navbar-nav mr-auto">

@@ -34,9 +34,12 @@ export function login(user) {
                 method: "POST",
                 body: JSON.stringify(user),
                 headers: {
-                    "Content-Type": "application/json"
-                },
-                mode: "no-cors"
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+                    "Access-Control-Allow-Headers": ["Origin", "Content-Type"]
+                }
             })
             .then(response => response.json(), error => console.log("An error has occured", error))
             .then(json => dispatch(completeConnection(json.token)))
@@ -53,11 +56,14 @@ export function createUser(user) {
                 method: "POST",
                 body: JSON.stringify(user),
                 headers: {
-                    "Content-Type": "application/json"
-                },
-                mode: "no-cors"
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+                    "Access-Control-Allow-Headers": ["Origin", "Content-Type"]
+                }
             })
-            .then(Object.json.apply, error => console.log("An error has occured", error))
+            .then(response => response.json(), error => console.log("An error has occured", error))
             .then(json => dispatch(userCreated(json)))
             .catch(err => console.log(err));
     }
