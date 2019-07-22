@@ -1,12 +1,40 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
+import {disconnect} from "../redux/actions";
 
 class Navbar extends React.Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.props = props;
+    }
+
+    disconnect() {
+        this.props.onDisconnect();
+    }
+
+    generateLinks() {
+        if (!this.props.isAuthenticated) {
+            return <li className="nav-item">
+                <Link to="/create-account" className="nav-link">Create account</Link>
+            </li>;
+        }
+        return null;
+    }
+
+    generateLogin() {
+        if (!this.props.isAuthenticated) {
+            return <Link to="/login" className="nav-link">Login</Link>;
+        }
+        let username = this.props.username;
+        return (<div>
+            Hello, {username}!&nbsp;
+            <button type="button"
+                    className="btn btn-primary"
+                    onClick={this.disconnect.bind(this)}>Disconnect
+            </button>
+        </div>);
     }
 
     render() {
@@ -18,25 +46,31 @@ class Navbar extends React.Component {
                         <li className="nav-item">
                             <Link to="/" className="nav-link">Home</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link to="/create-account" className="nav-link">Create account</Link>
-                        </li>
-                        <li className="nav-item my-2 my-lg-0 pull-right">
-                        </li>
+                        {this.generateLinks()}
                     </ul>
-                    <Link to="/login" className="nav-link">Login</Link>
+                    {this.generateLogin()}
                 </div>
             </nav>
         );
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    ownProps.isAuthenticated = state.auth.isAuthenticated;
-    console.log("state to props Navbar:  " + state);
-    return ownProps;
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        username: state.auth.username
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onDisconnect: () => {
+            dispatch(disconnect());
+        }
+    }
 };
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Navbar);

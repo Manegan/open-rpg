@@ -1,15 +1,25 @@
-import {CONNECTED, CONNECTING, USER_CREATION_COMPLETED, USER_CREATION_REQUESTED} from "./actionTypes";
+import {CONNECTED, CONNECTING, DISCONNECTED, USER_CREATION_COMPLETED, USER_CREATION_REQUESTED} from "./actionTypes";
+import history from '../history';
+import { toast } from 'react-toastify';
 
-function requestConnection() {
+function requestConnection(user) {
     return {
-        type: CONNECTING
+        type: CONNECTING,
+        payload: user
     }
 }
 
 function completeConnection(token) {
+    history.push("/");
     return {
         type: CONNECTED,
         payload: token
+    }
+}
+
+export function disconnect() {
+    return {
+        type: DISCONNECTED
     }
 }
 
@@ -28,21 +38,17 @@ function userCreated(user) {
 
 export function login(user) {
     return function (dispatch) {
-        dispatch(requestConnection());
-        console.log(JSON.stringify(user));
+        dispatch(requestConnection(user.username));
         return fetch("http://localhost:8080/login", {
                 method: "POST",
-                body: JSON.stringify(user),
                 headers: {
                     "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-                    "Access-Control-Allow-Headers": ["Origin", "Content-Type"]
-                }
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify(user)
             })
             .then(response => response.json(), error => console.log("An error has occured", error))
-            .then(json => dispatch(completeConnection(json.token)))
+            .then(json => dispatch(completeConnection(json.body.token)))
             .catch(err => console.log(err));
     }
 }
@@ -54,17 +60,25 @@ export function createUser(user) {
         user.roles = [];
         return fetch("http://localhost:8080/api/user", {
                 method: "POST",
-                body: JSON.stringify(user),
                 headers: {
                     "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-                    "Access-Control-Allow-Headers": ["Origin", "Content-Type"]
-                }
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify(user)
             })
-            .then(response => response.json(), error => console.log("An error has occured", error))
-            .then(json => dispatch(userCreated(json)))
+            .then(response => {
+                if (response.status == 200) {
+                    toast("User " + user.username + " created", {type: toast.TYPE.SUCCESS});
+                    return response.json();
+                }
+                toast("User " + user.username + " already exist", {type: toast.TYPE.ERROR});
+            },
+                error => {
+                console.log("An error has occured", error)
+            })
+            .then(response => {
+                dispatch(userCreated(response.body))
+            })
             .catch(err => console.log(err));
     }
 }

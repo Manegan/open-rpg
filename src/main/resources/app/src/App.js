@@ -1,5 +1,6 @@
 import React from 'react';
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {Router, Route} from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 
 import "./App.css";
 
@@ -9,12 +10,14 @@ import Home from "./components/Home";
 import CreateAccount from "./components/CreateAccount";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
+import history from "./history";
 
 class App extends React.Component {
     render() {
         return (
-            <Router>
+            <Router history={history}>
                 <div className="container-fluid">
+                    <ToastContainer/>
                     <Navbar/>
                     <div className="row mt-3">
                         <Route path="/" exact component={Home}/>

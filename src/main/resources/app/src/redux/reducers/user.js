@@ -1,34 +1,27 @@
 import {USER_CREATION_COMPLETED, USER_CREATION_FAILED, USER_CREATION_REQUESTED} from "../actionTypes";
 
 const initialState = {
-    user: {
-        creationPending: false,
-        creationSucceeded: false,
-        creationFailed: false
-    }
+    creationPending: false,
+    creationSucceeded: false,
+    creationFailed: false
 };
 
 export default function user(state = initialState, action) {
+    console.log(action);
     switch(action.type) {
         case USER_CREATION_REQUESTED: {
             return Object.assign({}, state, {
-                user: {
-                    creationPending: true
-                }
+                creationPending: true
             });
         }
         case USER_CREATION_COMPLETED: {
             return Object.assign({}, state, {
-                user: {
-                    creationSucceeded: true
-                }
+                creationSucceeded: true
             });
         }
         case USER_CREATION_FAILED: {
             return Object.assign({}, state, {
-                user: {
-                    creationFailed: true
-                }
+                creationFailed: true
             });
         }
         default: return initialState;
