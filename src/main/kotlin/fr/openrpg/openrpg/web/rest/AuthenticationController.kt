@@ -17,7 +17,7 @@ class AuthenticationController(val jwtUtil: JWTUtil, val pbkdF2Encoder: PBKDF2En
 
     @PostMapping("/login")
     fun login(@RequestBody req: AuthRequest): Mono<AuthResponse> =
-        userRepository.findByUsername(req.username!!)
+        userRepository.findByUsername(req.username)
             .map {
                 if (pbkdF2Encoder.encode(req.password) == it.password) {
                     return@map AuthResponse(jwtUtil.generateToken(it))
