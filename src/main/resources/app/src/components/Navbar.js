@@ -11,9 +11,7 @@ class Navbar extends React.Component {
 
     generateLinks() {
         if (!this.props.isAuthenticated) {
-            return <li className="nav-item">
-                <Link to="/create-account" className="nav-link">Create account</Link>
-            </li>;
+            return null;
         }
         return null;
     }
