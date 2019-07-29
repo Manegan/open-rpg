@@ -17,6 +17,8 @@ data class User(private var username: String?) : UserDetails {
 
     private var roles: List<Role>? = null
 
+    private var email: String? = null
+
     override fun getUsername(): String? {
         return username
     }
@@ -61,5 +63,13 @@ data class User(private var username: String?) : UserDetails {
 
     fun setRoles(roles: List<Role>?) {
         this.roles = roles
+    }
+
+    fun getEmail(): String? {
+        return email
+    }
+
+    fun setEmail(email: String?) {
+        this.email = email
     }
 }

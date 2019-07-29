@@ -16,7 +16,10 @@ class UserService(val userRepository: UserRepository, val pbkdF2Encoder: PBKDF2E
         user.setPassword(pbkdF2Encoder.encode(user.password))
         return userRepository.findByUsername(user.username!!)
                 .onErrorResume { Mono.error(BadRequestException()) }
-                .map<User> { throw AlreadyExistException() }
-                .switchIfEmpty(userRepository.save(user))
+                .map<User> { throw AlreadyExistException("user") }
+                .switchIfEmpty(userRepository.findByEmail(user.getEmail()!!)
+                        .onErrorResume { Mono.error(BadRequestException()) }
+                        .map<User> { throw AlreadyExistException("email") }
+                        .switchIfEmpty(userRepository.save(user)))
     }
 }

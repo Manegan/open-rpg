@@ -5,10 +5,6 @@ import {disconnect} from "../redux/actions";
 
 class Navbar extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     disconnect() {
         this.props.onDisconnect();
     }

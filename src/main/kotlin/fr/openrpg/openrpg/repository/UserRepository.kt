@@ -9,4 +9,6 @@ import java.util.*
 @Repository
 interface UserRepository: ReactiveMongoRepository<User, UUID> {
     fun findByUsername(username: String): Mono<User>
+
+    fun findByEmail(email: String): Mono<User>
 }

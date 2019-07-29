@@ -48,7 +48,7 @@ export function login(user) {
                 body: JSON.stringify(user)
             })
             .then(response => {
-                if (response.status === 200) {
+                if (response.status === 201) {
                     toast("Successfully logged in.", {type: toast.TYPE.SUCCESS});
                     return response.json();
                 }
