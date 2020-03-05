@@ -1,0 +1,38 @@
+name: Open Rpg
+on: [push, pull_request]
+jobs:
+  build:
+    name: Greeting
+    runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        node_version: [12.16.1]
+        os: [ubuntu-latest]
+    steps:
+      #----------------------------------------------------------------------
+      # Install all tools and check configuration
+      #----------------------------------------------------------------------
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node_version: ${{ matrix.node-version }}
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11.x'
+      #----------------------------------------------------------------------
+      # Back
+      #----------------------------------------------------------------------
+      - name: 'BACK: Installing project'
+        run: mvn install
+      - name: 'BACK: Running tests'
+        run: mvn test
+      #----------------------------------------------------------------------
+      # Front
+      #----------------------------------------------------------------------
+      - name: 'FRONT: Installing project'
+        run: npm install
+      - name: 'FRONT Running tests'
+        run: npm run test
