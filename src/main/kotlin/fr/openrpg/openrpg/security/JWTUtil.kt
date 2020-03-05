@@ -20,7 +20,7 @@ class JWTUtil : Serializable {
     private val expirationTime: String? = null
 
     fun getAllClaimsFromToken(token: String): Claims {
-        return Jwts.parser().setSigningKey(Base64.getEncoder().encodeToString(secret!!.toByteArray())).parseClaimsJws(token).getBody()
+        return Jwts.parser().setSigningKey(Base64.getEncoder().encodeToString(secret!!.toByteArray())).parseClaimsJws(token).body
     }
 
     fun getUsernameFromToken(token: String): String {
@@ -37,7 +37,7 @@ class JWTUtil : Serializable {
     }
 
     fun generateToken(user: User): String {
-        val claims = HashMap<String, Any?>()
+            val claims = HashMap<String, Any?>()
         claims["role"] = user.getRoles()
         return doGenerateToken(claims, user.username)
     }
@@ -46,7 +46,7 @@ class JWTUtil : Serializable {
         val expirationTimeLong = java.lang.Long.parseLong(expirationTime!!) //in second
 
         val createdDate = Date()
-        val expirationDate = Date(createdDate.getTime() + expirationTimeLong * 1000)
+        val expirationDate = Date(createdDate.time + expirationTimeLong * 1000)
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)

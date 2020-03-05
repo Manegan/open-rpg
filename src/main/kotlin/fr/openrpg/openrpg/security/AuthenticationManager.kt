@@ -20,28 +20,26 @@ class AuthenticationManager : ReactiveAuthenticationManager {
     override fun authenticate(authentication: Authentication): Mono<Authentication> {
         val authToken = authentication.credentials.toString()
 
-        var username: String?
-        try {
-            username = jwtUtil!!.getUsernameFromToken(authToken)
+        val username = try {
+            jwtUtil!!.getUsernameFromToken(authToken)
         } catch (e: Exception) {
-            username =
-                    null
+            null
         }
 
-        if (username != null && jwtUtil!!.validateToken(authToken)!!) {
+        return if (username != null && jwtUtil!!.validateToken(authToken)!!) {
             val claims = jwtUtil.getAllClaimsFromToken(authToken)
             val rolesMap: List<String> = claims.get("role", List::class.java).map { toString() }
             val roles = ArrayList<Role>()
-            for (rolemap in rolesMap) {
-                roles.add(Role.valueOf(rolemap))
+            for (roleMap in rolesMap) {
+                roles.add(Role.valueOf(roleMap))
             }
             val auth = UsernamePasswordAuthenticationToken(
                     username, null,
                     roles.stream().map { authority -> SimpleGrantedAuthority(authority.name) }.collect(Collectors.toList())
             )
-            return Mono.just(auth)
+            Mono.just(auth)
         } else {
-            return Mono.empty()
+            Mono.empty()
         }
     }
 }

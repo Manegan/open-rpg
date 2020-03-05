@@ -43,7 +43,7 @@ class SecurityConfig(private val authenticationManager: AuthenticationManager, p
                 .pathMatchers(HttpMethod.GET, "/static/**").permitAll()
                 .pathMatchers(HttpMethod.GET, "/*.(json,js,ico)").permitAll()
                 .pathMatchers(HttpMethod.POST, "/api/user").permitAll()
-                .pathMatchers("/login").permitAll()
+                .pathMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyExchange().authenticated()
             .and()
                 .build()
