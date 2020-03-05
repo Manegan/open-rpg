@@ -2,7 +2,7 @@ package fr.openrpg.openrpg.service
 
 import fr.openrpg.openrpg.exception.AlreadyExistException
 import fr.openrpg.openrpg.exception.BadRequestException
-import fr.openrpg.openrpg.model.User
+import fr.openrpg.openrpg.model.auth.User
 import fr.openrpg.openrpg.repository.UserRepository
 import fr.openrpg.openrpg.security.PBKDF2Encoder
 import fr.openrpg.openrpg.security.Role

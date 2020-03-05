@@ -1,6 +1,6 @@
 package fr.openrpg.openrpg.repository
 
-import fr.openrpg.openrpg.model.User
+import fr.openrpg.openrpg.model.auth.User
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono

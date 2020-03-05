@@ -1,4 +1,4 @@
-package fr.openrpg.openrpg.model
+package fr.openrpg.openrpg.model.rpg
 
 import org.springframework.data.mongodb.core.mapping.Document
 

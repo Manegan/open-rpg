@@ -1,8 +1,8 @@
 package fr.openrpg.openrpg.web.rest
 
 import fr.openrpg.openrpg.exception.UnauthorizedException
-import fr.openrpg.openrpg.model.AuthRequest
-import fr.openrpg.openrpg.model.AuthResponse
+import fr.openrpg.openrpg.model.auth.AuthRequest
+import fr.openrpg.openrpg.model.auth.AuthResponse
 import fr.openrpg.openrpg.repository.UserRepository
 import fr.openrpg.openrpg.security.JWTUtil
 import fr.openrpg.openrpg.security.PBKDF2Encoder

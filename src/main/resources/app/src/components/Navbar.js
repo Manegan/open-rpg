@@ -13,7 +13,11 @@ class Navbar extends React.Component {
         if (!this.props.isAuthenticated) {
             return null;
         }
-        return null;
+        return [
+            <li className="nav-item">
+                <Link to="/rpg-rulesets" className="nav-link">My Rulesets</Link>
+            </li>
+        ];
     }
 
     generateLogin() {
@@ -22,11 +26,12 @@ class Navbar extends React.Component {
         }
         let username = this.props.username;
         return [
-            <span>Hello, {username}!&nbsp;</span>,
+            <span>Hello, {username}!{' '}</span>,
             <button type="button"
                     className="btn btn-primary"
                     onClick={this.disconnect.bind(this)}>Disconnect
-            </button>];
+            </button>
+        ];
     }
 
     render() {

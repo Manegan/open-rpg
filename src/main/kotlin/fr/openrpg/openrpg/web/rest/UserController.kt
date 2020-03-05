@@ -1,7 +1,7 @@
 package fr.openrpg.openrpg.web.rest
 
 import fr.openrpg.openrpg.exception.AlreadyExistException
-import fr.openrpg.openrpg.model.User
+import fr.openrpg.openrpg.model.auth.User
 import fr.openrpg.openrpg.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

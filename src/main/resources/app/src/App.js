@@ -1,5 +1,5 @@
 import React from 'react';
-import {Router, Route} from "react-router-dom";
+import { BrowserRouter as Router, Route} from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 
 import "./App.css";
@@ -10,6 +10,8 @@ import Home from "./components/Home";
 import CreateAccount from "./components/CreateAccount";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
+import Rulesets from "./components/Rulesets";
+import PrivateRoute from "./components/PrivateRoute";
 import history from "./history";
 
 class App extends React.Component {
@@ -23,6 +25,7 @@ class App extends React.Component {
                         <Route path="/" exact component={Home}/>
                         <Route path="/create-account" exact component={CreateAccount}/>
                         <Route path="/login" exact component={Login}/>
+                        <PrivateRoute path="/rpg-rulesets" exact component={Rulesets}/>
                     </div>
                 </div>
             </Router>

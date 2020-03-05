@@ -1,3 +1,3 @@
-package fr.openrpg.openrpg.model
+package fr.openrpg.openrpg.model.auth
 
 data class AuthRequest(val username: String, val password: String)

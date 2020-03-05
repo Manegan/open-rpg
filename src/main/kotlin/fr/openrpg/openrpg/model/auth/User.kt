@@ -1,4 +1,4 @@
-package fr.openrpg.openrpg.model
+package fr.openrpg.openrpg.model.auth
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty

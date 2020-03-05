@@ -1,6 +1,6 @@
 package fr.openrpg.openrpg.web.rest
 
-import fr.openrpg.openrpg.model.Character
+import fr.openrpg.openrpg.model.rpg.Character
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.ResponseStatus
