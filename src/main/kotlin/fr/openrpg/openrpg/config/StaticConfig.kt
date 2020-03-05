@@ -13,7 +13,7 @@ class StaticConfig {
     fun indexRoute(): RouterFunction<ServerResponse> =
             RouterFunctions.route(
                     RequestPredicates.GET("/"),
-                    HandlerFunction { r -> ok().body(BodyInserters.fromResource(ClassPathResource("/site/index.html"))) }
+                    HandlerFunction { ok().body(BodyInserters.fromResource(ClassPathResource("/site/index.html"))) }
             )
 
     @Bean

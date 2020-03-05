@@ -30,6 +30,7 @@ function requestCreateUser() {
 }
 
 function userCreated(user) {
+    history.push("/login");
     return {
         type: USER_CREATION_COMPLETED,
         payload: user
