@@ -39,4 +39,4 @@ jobs:
       - name: 'FRONT: Installing project'
         run: npm install
       - name: 'FRONT Running tests'
-        run: npm run test -- --watchAll=false
+        run: npm run test -- --watchAll=false --passWithNoTests
