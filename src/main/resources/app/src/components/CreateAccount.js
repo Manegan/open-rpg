@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 import { createUser } from "../redux/actions"
 
 class CreateAccount extends React.Component {
@@ -40,7 +41,7 @@ class CreateAccount extends React.Component {
             username: this.state.username,
             password: this.state.password,
             email: this.state.email
-        });
+        }, this.props.history);
         this.setState({
             username: "",
             password: "",
@@ -114,4 +115,4 @@ const mapStateToProps = state => {
 export default connect(
     mapStateToProps,
     {createUser}
-)(CreateAccount);
+)(withRouter(CreateAccount));

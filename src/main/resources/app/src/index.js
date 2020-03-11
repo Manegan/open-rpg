@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {applyMiddleware, createStore} from 'redux';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
-import {applyMiddleware, createStore} from 'redux';
-import thunk from 'redux-thunk';
-import { Provider } from "react-redux";
 import reducers from './redux/reducers'
-
 import 'react-toastify/dist/ReactToastify.css';
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const store = createStore(reducers, applyMiddleware(thunk));

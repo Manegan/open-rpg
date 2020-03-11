@@ -1,12 +1,12 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {disconnect} from "../redux/actions";
 
 class Navbar extends React.Component {
 
     disconnect() {
-        this.props.onDisconnect();
+        this.props.onDisconnect(this.props.history);
     }
 
     generateLinks() {
@@ -61,8 +61,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onDisconnect: () => {
-            dispatch(disconnect());
+        onDisconnect: (history) => {
+            dispatch(disconnect(history));
         }
     }
 };
@@ -70,4 +70,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Navbar);
+)(withRouter(Navbar));

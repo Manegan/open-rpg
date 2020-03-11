@@ -1,23 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Route} from "react-router-dom";
+import { BrowserRouter, Route} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import "./App.css";
+import './App.css';
 
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 
-import Home from "./components/Home";
-import CreateAccount from "./components/CreateAccount";
-import Navbar from "./components/Navbar";
-import Login from "./components/Login";
-import Rulesets from "./components/Rulesets";
-import PrivateRoute from "./components/PrivateRoute";
-import history from "./history";
+import Home from './components/Home';
+import CreateAccount from './components/CreateAccount';
+import Navbar from './components/Navbar';
+import Login from './components/Login';
+import Rulesets from './components/Rulesets';
+import PrivateRoute from './components/PrivateRoute';
+import {createBrowserHistory} from "history";
+
+const history = createBrowserHistory();
 
 class App extends React.Component {
     render() {
         return (
-            <Router history={history}>
+            <BrowserRouter history={history}>
                 <div className="container-fluid">
                     <ToastContainer/>
                     <Navbar/>
@@ -28,7 +30,7 @@ class App extends React.Component {
                         <PrivateRoute path="/rpg-rulesets" exact component={Rulesets}/>
                     </div>
                 </div>
-            </Router>
+            </BrowserRouter>
         );
     }
 }

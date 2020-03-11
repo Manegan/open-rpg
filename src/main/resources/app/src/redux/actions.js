@@ -1,5 +1,4 @@
 import {CONNECTED, CONNECTING, DISCONNECTED, USER_CREATION_COMPLETED, USER_CREATION_REQUESTED} from "./actionTypes";
-import history from '../history';
 import { toast } from 'react-toastify';
 
 function requestConnection(user) {
@@ -9,7 +8,7 @@ function requestConnection(user) {
     }
 }
 
-function completeConnection(token) {
+function completeConnection(token, history) {
     history.push("/");
     return {
         type: CONNECTED,
@@ -17,7 +16,8 @@ function completeConnection(token) {
     }
 }
 
-export function disconnect() {
+export function disconnect(history) {
+    history.push("/");
     return {
         type: DISCONNECTED
     }
@@ -29,7 +29,7 @@ function requestCreateUser() {
     }
 }
 
-function userCreated(user) {
+function userCreated(user, history) {
     history.push("/login");
     return {
         type: USER_CREATION_COMPLETED,
@@ -37,7 +37,7 @@ function userCreated(user) {
     }
 }
 
-export function login(user) {
+export function login(user, history) {
     return function (dispatch) {
         dispatch(requestConnection(user.username));
         return fetch("http://localhost:8080/login", {
@@ -55,12 +55,12 @@ export function login(user) {
                 }
                 toast("Wrong username or password.", {type: toast.TYPE.ERROR})
             }, error => toast("An error occurred.", {type: toast.TYPE.ERROR}))
-            .then(json => dispatch(completeConnection(json.token)))
+            .then(json => dispatch(completeConnection(json.token, history)))
             .catch(err => console.log(err));
     }
 }
 
-export function createUser(user) {
+export function createUser(user, history) {
     return function (dispatch) {
         dispatch(requestCreateUser());
         user.enabled = true;
@@ -79,8 +79,8 @@ export function createUser(user) {
                     return response.json();
                 }
                 toast("User " + user.username + " already exist.", {type: toast.TYPE.ERROR});
-            }, error => toast("An error occurred.", {type: toast.TYPE.ERROR}))
-            .then(response => dispatch(userCreated(response.body)))
+            }, __ => toast("An error occurred.", {type: toast.TYPE.ERROR}))
+            .then(response => dispatch(userCreated(response.body, history)))
             .catch(err => console.log(err));
     }
 }

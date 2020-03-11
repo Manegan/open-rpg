@@ -1,12 +1,12 @@
-import React from "react";
-import {connect} from "react-redux";
-import {login} from "../redux/actions";
-import {Link} from "react-router-dom";
+import React from 'react';
+import {connect} from 'react-redux';
+import {login} from '../redux/actions';
+import {Link} from 'react-router-dom';
 
 class Login extends React.Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.props = props;
         this.state = {
             username: "",
@@ -19,7 +19,7 @@ class Login extends React.Component {
         this.props.login({
             username: this.state.username,
             password: this.state.password
-        });
+        }, this.props.history);
         this.setState({
             username: "",
             password: ""
