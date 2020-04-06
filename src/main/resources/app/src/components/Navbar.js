@@ -15,7 +15,7 @@ class Navbar extends React.Component {
         }
         return [
             <li className="nav-item">
-                <Link to="/rpg-rulesets" className="nav-link">My Rulesets</Link>
+                <Link to="/my-characters" className="nav-link">My Characters</Link>
             </li>
         ];
     }

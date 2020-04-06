@@ -10,7 +10,7 @@ import Home from './components/Home';
 import CreateAccount from './components/CreateAccount';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
-import Rulesets from './components/Rulesets';
+import Characters from './components/Characters';
 import PrivateRoute from './components/PrivateRoute';
 import {createBrowserHistory} from "history";
 
@@ -27,7 +27,7 @@ class App extends React.Component {
                         <Route path="/" exact component={Home}/>
                         <Route path="/create-account" exact component={CreateAccount}/>
                         <Route path="/login" exact component={Login}/>
-                        <PrivateRoute path="/rpg-rulesets" exact component={Rulesets}/>
+                        <PrivateRoute path="/my-characters" exact component={Characters}/>
                     </div>
                 </div>
             </BrowserRouter>

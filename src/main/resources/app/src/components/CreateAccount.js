@@ -37,19 +37,21 @@ class CreateAccount extends React.Component {
 
     createUsername(ev) {
         ev.preventDefault();
-        this.props.createUser({
-            username: this.state.username,
-            password: this.state.password,
-            email: this.state.email
-        }, this.props.history);
-        this.setState({
-            username: "",
-            password: "",
-            email: "",
+        if (this.state.username !== "" && this.state.password !== "" && this.state.email !== "" && !this.emailError) {
+            this.props.createUser({
+                username: this.state.username,
+                password: this.state.password,
+                email: this.state.email
+            }, this.props.history);
+            this.setState({
+                username: "",
+                password: "",
+                email: "",
 
-            emailIsValid: false,
-            emailIsDirty: false
-        })
+                emailIsValid: false,
+                emailIsDirty: false
+            })
+        }
     }
 
     render() {
@@ -58,7 +60,7 @@ class CreateAccount extends React.Component {
                 <div className="card w-50 m-auto shadow">
                     <div className="card-header">Create a new account</div>
                     <div className="card-body">
-                        <form>
+                        <form onSubmit={this.createUsername.bind(this)}>
                             <div className="row">
                                 <div className="col-10">
                                     <div className="form-group">
@@ -93,10 +95,9 @@ class CreateAccount extends React.Component {
                                 </div>
                                 <div className="col-2">
                                     <div className="form-group" style={{ bottom: 0 + "px", position: "absolute" }}>
-                                        <button type="button" className="btn btn-primary"
-                                                onClick={this.createUsername.bind(this)}
-                                                onSubmit={e => e.preventDefault()}
-                                                disabled={this.state.username === "" || this.state.password === "" || this.state.email === "" || this.emailError}>Submit</button>
+                                        <button type="submit" className="btn btn-primary"
+                                                disabled={this.state.username === "" || this.state.password === "" || this.state.email === "" || this.emailError}
+                                        >Submit</button>
                                     </div>
                                 </div>
                             </div>

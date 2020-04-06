@@ -16,14 +16,16 @@ class Login extends React.Component {
 
     login(e) {
         e.preventDefault();
-        this.props.login({
-            username: this.state.username,
-            password: this.state.password
-        }, this.props.history);
-        this.setState({
-            username: "",
-            password: ""
-        })
+        if (this.state.username !== "" && this.state.password !== "") {
+            this.props.login({
+                username: this.state.username,
+                password: this.state.password
+            }, this.props.history);
+            this.setState({
+                username: "",
+                password: ""
+            })
+        }
     }
 
     render() {
@@ -32,7 +34,7 @@ class Login extends React.Component {
             <div className="card m-auto shadow">
                 <div className="card-header">Login</div>
                 <div className="card-body">
-                    <form>
+                    <form onSubmit={this.login.bind(this)}>
                         <div className="row">
                             <div className="col-10">
                                 <div className="form-group">
@@ -56,9 +58,7 @@ class Login extends React.Component {
                             </div>
                             <div className="col-2">
                                 <div className="form-group" style={{ bottom: 0 + "px", position: "absolute" }}>
-                                    <button type="button" className="btn btn-primary"
-                                            onClick={this.login.bind(this)}
-                                            onSubmit={e => e.preventDefault()}
+                                    <button type="submit" className="btn btn-primary"
                                             disabled={this.state.username === "" || this.state.password === ""}>Submit</button>
                                 </div>
                             </div>
