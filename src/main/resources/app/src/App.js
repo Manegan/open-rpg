@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route} from 'react-router-dom';
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import './App.css';
@@ -24,10 +24,12 @@ class App extends React.Component {
                     <ToastContainer/>
                     <Navbar/>
                     <div className="row mt-3">
-                        <Route path="/" exact component={Home}/>
-                        <Route path="/create-account" exact component={CreateAccount}/>
-                        <Route path="/login" exact component={Login}/>
-                        <PrivateRoute path="/my-characters" exact component={Characters}/>
+                        <Switch>
+                            <Route path="/" exact component={Home}/>
+                            <Route path="/create-account" component={CreateAccount}/>
+                            <Route path="/login" component={Login}/>
+                            <PrivateRoute path="/my-characters" component={Characters}/>
+                        </Switch>
                     </div>
                 </div>
             </BrowserRouter>

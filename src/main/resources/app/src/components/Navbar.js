@@ -24,12 +24,12 @@ class Navbar extends React.Component {
         if (!this.props.isAuthenticated) {
             return <Link to="/login" className="nav-link">Login</Link>;
         }
-        let username = this.props.username;
         return [
-            <span>Hello, {username}!{' '}</span>,
+            <span key="username" className="pr-2">Hello, {this.props.username}!{' '}</span>,
             <button type="button"
                     className="btn btn-primary"
-                    onClick={this.disconnect.bind(this)}>Disconnect
+                    onClick={this.disconnect.bind(this)}
+                    key="disconnect">Disconnect
             </button>
         ];
     }
@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(Navbar));
+)(Navbar));

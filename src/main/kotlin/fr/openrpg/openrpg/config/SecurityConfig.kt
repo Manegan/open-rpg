@@ -4,7 +4,6 @@ import fr.openrpg.openrpg.security.AuthenticationManager
 import fr.openrpg.openrpg.security.SecurityContextRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
@@ -12,6 +11,7 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsConfigurationSource
 import org.springframework.web.cors.reactive.CorsWebFilter
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 import org.springframework.web.reactive.config.CorsRegistry
@@ -21,10 +21,16 @@ import reactor.core.publisher.Mono
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-class SecurityConfig(private val authenticationManager: AuthenticationManager, private val securityContextRepository: SecurityContextRepository): WebFluxConfigurer {
+class SecurityConfig(
+        private val authenticationManager: AuthenticationManager,
+        private val securityContextRepository: SecurityContextRepository
+): WebFluxConfigurer {
     @Bean
-    fun securitygWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
+    fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
+                .csrf().disable()
+                .formLogin().disable()
+                .httpBasic().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint { swe, _ ->
                         Mono.fromRunnable { swe.response.statusCode = HttpStatus.UNAUTHORIZED }
@@ -32,9 +38,6 @@ class SecurityConfig(private val authenticationManager: AuthenticationManager, p
                         Mono.fromRunnable { swe.response.statusCode = HttpStatus.FORBIDDEN }
                 }
             .and()
-                .csrf().disable()
-                .formLogin().disable()
-                .httpBasic().disable()
                 .authenticationManager(authenticationManager)
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
@@ -49,10 +52,20 @@ class SecurityConfig(private val authenticationManager: AuthenticationManager, p
                 .build()
     }
 
-    @Profile("local")
-    override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedMethods("*")
+    private fun corsConfiguration(): CorsConfiguration {
+        val corsConfiguration = CorsConfiguration()
+        corsConfiguration.allowCredentials = true
+        corsConfiguration.allowedHeaders = listOf("*")
+        corsConfiguration.allowedOrigins = listOf("*")
+        corsConfiguration.allowedMethods = listOf("*")
+        corsConfiguration.maxAge = 3600
+        return corsConfiguration
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", corsConfiguration())
+        return source
     }
 }

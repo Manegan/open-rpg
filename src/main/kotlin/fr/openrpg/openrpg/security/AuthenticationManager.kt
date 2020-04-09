@@ -1,6 +1,5 @@
 package fr.openrpg.openrpg.security
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -10,25 +9,21 @@ import reactor.core.publisher.Mono
 import java.util.*
 import java.util.stream.Collectors
 
-
 @Component
-class AuthenticationManager : ReactiveAuthenticationManager {
-
-    @Autowired
-    private val jwtUtil: JWTUtil? = null
+class AuthenticationManager(val jwtUtil: JWTUtil) : ReactiveAuthenticationManager {
 
     override fun authenticate(authentication: Authentication): Mono<Authentication> {
         val authToken = authentication.credentials.toString()
 
         val username = try {
-            jwtUtil!!.getUsernameFromToken(authToken)
+            jwtUtil.getUsernameFromToken(authToken)
         } catch (e: Exception) {
             null
         }
 
-        return if (username != null && jwtUtil!!.validateToken(authToken)!!) {
+        return if (username != null && jwtUtil.validateToken(authToken)) {
             val claims = jwtUtil.getAllClaimsFromToken(authToken)
-            val rolesMap: List<String> = claims.get("role", List::class.java).map { toString() }
+            val rolesMap: List<String> = claims.get("role", List::class.java).map { it.toString() }
             val roles = ArrayList<Role>()
             for (roleMap in rolesMap) {
                 roles.add(Role.valueOf(roleMap))

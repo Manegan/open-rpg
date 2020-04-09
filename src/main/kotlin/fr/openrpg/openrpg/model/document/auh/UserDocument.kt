@@ -1,4 +1,4 @@
-package fr.openrpg.openrpg.model.auth
+package fr.openrpg.openrpg.model.document.auh
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 @Document("user")
-data class User(private var username: String?) : UserDetails {
+data class UserDocument(private var username: String?) : UserDetails {
     private var password: String? = null
 
     private var enabled: Boolean? = null

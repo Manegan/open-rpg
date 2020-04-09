@@ -1,4 +1,12 @@
-import {CONNECTED, CONNECTING, DISCONNECTED, USER_CREATION_COMPLETED, USER_CREATION_REQUESTED} from "./actionTypes";
+import {
+    CHARACTER_FETCH_COMPLETED, CHARACTER_FETCH_FAILED,
+    CHARACTER_FETCH_REQUESTED,
+    CONNECTED,
+    CONNECTING,
+    DISCONNECTED,
+    USER_CREATION_COMPLETED,
+    USER_CREATION_REQUESTED
+} from "./actionTypes";
 import { toast } from 'react-toastify';
 
 function requestConnection(user) {
@@ -37,6 +45,25 @@ function userCreated(user, history) {
     }
 }
 
+function requestAllCharacters() {
+    return {
+        type: CHARACTER_FETCH_REQUESTED
+    }
+}
+
+function charactersFetched(characters) {
+    return {
+        type: CHARACTER_FETCH_COMPLETED,
+        payload: characters
+    }
+}
+
+function requestCharactersFailed() {
+    return {
+        type: CHARACTER_FETCH_FAILED
+    }
+}
+
 export function login(user, history) {
     return function (dispatch) {
         dispatch(requestConnection(user.username));
@@ -54,9 +81,9 @@ export function login(user, history) {
                     return response.json();
                 }
                 toast("Wrong username or password.", {type: toast.TYPE.ERROR})
-            }, error => toast("An error occurred.", {type: toast.TYPE.ERROR}))
+            }, __ => toast("An error occurred.", {type: toast.TYPE.ERROR}))
             .then(json => dispatch(completeConnection(json.token, history)))
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 }
 
@@ -80,7 +107,33 @@ export function createUser(user, history) {
                 }
                 toast("User " + user.username + " already exist.", {type: toast.TYPE.ERROR});
             }, __ => toast("An error occurred.", {type: toast.TYPE.ERROR}))
-            .then(response => dispatch(userCreated(response.body, history)))
-            .catch(err => console.log(err));
+            .then(response => dispatch(userCreated(response, history)))
+            .catch(console.error);
+    }
+}
+
+export function getCharacters(auth) {
+    return function (dispatch) {
+        dispatch(requestAllCharacters());
+        return fetch("http://localhost:8080/api/characters", {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + auth
+            }
+        })
+        .then(response => {
+            if (response.status === 200) return response.json()
+        }, __ => toast("An error occurred.", {type: toast.TYPE.ERROR}))
+        .then(response => dispatch(charactersFetched(response)))
+        .catch(console.error)
+        // const characters = [];
+        // const eventSource = new EventSource("http://localhost:8080/api/characters", {withCredentials: true});
+        // eventSource.addEventListener("message", (e) => {
+        //     characters.push(e.data);
+        // });
+        // eventSource.addEventListener("open", (e) => dispatch(charactersFetched(characters)));
+        // eventSource.addEventListener("error", (e) => dispatch(requestCharactersFailed()));
     }
 }

@@ -1,6 +1,5 @@
 package fr.openrpg.openrpg.security
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContext
@@ -12,11 +11,7 @@ import reactor.core.publisher.Mono
 
 
 @Component
-class SecurityContextRepository : ServerSecurityContextRepository {
-
-    @Autowired
-    private val authenticationManager: AuthenticationManager? = null
-
+class SecurityContextRepository(val authenticationManager: AuthenticationManager) : ServerSecurityContextRepository {
     override fun save(swe: ServerWebExchange, sc: SecurityContext): Mono<Void> {
         throw UnsupportedOperationException("Not supported yet.")
     }
@@ -28,7 +23,7 @@ class SecurityContextRepository : ServerSecurityContextRepository {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             val authToken = authHeader.substring(7)
             val auth = UsernamePasswordAuthenticationToken(authToken, authToken)
-            return this.authenticationManager!!.authenticate(auth).map { authentication -> SecurityContextImpl(authentication) }
+            return this.authenticationManager.authenticate(auth).map { authentication -> SecurityContextImpl(authentication) }
         }
         return Mono.empty()
     }

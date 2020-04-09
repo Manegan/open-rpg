@@ -42,6 +42,6 @@ export default function (state = initialState, action) {
                 token: null
             });
         }
-        default: return initialState;
+        default: return state;
     }
 }

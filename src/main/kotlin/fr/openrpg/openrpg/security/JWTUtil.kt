@@ -1,6 +1,6 @@
 package fr.openrpg.openrpg.security
 
-import fr.openrpg.openrpg.model.auth.User
+import fr.openrpg.openrpg.model.document.auh.UserDocument
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -31,12 +31,12 @@ class JWTUtil : Serializable {
         return getAllClaimsFromToken(token).expiration
     }
 
-    private fun isTokenExpired(token: String): Boolean? {
+    private fun isTokenExpired(token: String): Boolean {
         val expiration = getExpirationDateFromToken(token)
         return expiration.before(Date())
     }
 
-    fun generateToken(user: User): String {
+    fun generateToken(user: UserDocument): String {
             val claims = HashMap<String, Any?>()
         claims["role"] = user.getRoles()
         return doGenerateToken(claims, user.username)
@@ -56,8 +56,8 @@ class JWTUtil : Serializable {
                 .compact()
     }
 
-    fun validateToken(token: String): Boolean? {
-        return !(isTokenExpired(token))!!
+    fun validateToken(token: String): Boolean {
+        return !(isTokenExpired(token))
     }
 
     companion object {

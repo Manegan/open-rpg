@@ -5,7 +5,7 @@ import { createUser } from "../redux/actions"
 
 class CreateAccount extends React.Component {
 
-    mailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     constructor(props) {
         super(props);
@@ -31,7 +31,6 @@ class CreateAccount extends React.Component {
     }
 
     showError() {
-        console.log(this.emailError);
         return this.emailError ? (<div className="alert alert-danger" role="alert">Invalid Email format</div>): '';
     }
 
@@ -47,7 +46,6 @@ class CreateAccount extends React.Component {
                 username: "",
                 password: "",
                 email: "",
-
                 emailIsValid: false,
                 emailIsDirty: false
             })
@@ -113,7 +111,7 @@ const mapStateToProps = state => {
     return {isAuthenticating: state.auth ? state.auth.isAuthenticating : false}
 };
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     {createUser}
-)(withRouter(CreateAccount));
+)(CreateAccount));
