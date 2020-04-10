@@ -2,6 +2,7 @@ package fr.openrpg.openrpg.web.rest
 
 import fr.openrpg.openrpg.exception.DocumentNotFoundException
 import fr.openrpg.openrpg.model.domain.rpg.Character
+import fr.openrpg.openrpg.security.Role
 import fr.openrpg.openrpg.service.CharacterService
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -32,7 +33,14 @@ class CharacterController(val service: CharacterService) {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun findCharacterById(@PathVariable id: UUID, principal: Principal): Mono<*> = service.findById(id, principal.name)
+    fun findCharacterById(@PathVariable id: String, principal: Principal): Mono<*> = service.findById(id, principal.name)
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun deleteCharacterById(@PathVariable id: String, principal: Principal): Mono<*> {
+        return service.deleteById(id, principal.name)
+    }
+
 
     @ExceptionHandler(DocumentNotFoundException::class)
     fun handleException(ex: DocumentNotFoundException): ResponseEntity<*> = ResponseEntity(ex, HttpStatus.NOT_FOUND)

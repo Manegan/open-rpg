@@ -1,5 +1,8 @@
 import {
-    CHARACTER_FETCH_COMPLETED, CHARACTER_FETCH_FAILED,
+    CHARACTER_DELETE_COMPLETED,
+    CHARACTER_DELETE_REQUESTED,
+    CHARACTER_FETCH_COMPLETED,
+    CHARACTER_FETCH_FAILED,
     CHARACTER_FETCH_REQUESTED,
     CONNECTED,
     CONNECTING,
@@ -7,7 +10,7 @@ import {
     USER_CREATION_COMPLETED,
     USER_CREATION_REQUESTED
 } from "./actionTypes";
-import { toast } from 'react-toastify';
+import {toast, ToastType} from 'react-toastify';
 
 function requestConnection(user) {
     return {
@@ -64,6 +67,20 @@ function requestCharactersFailed() {
     }
 }
 
+function requestDeleteCharacter(id) {
+    return {
+        type: CHARACTER_DELETE_REQUESTED,
+        payload: id
+    }
+}
+
+function characterDeleted(id) {
+    return {
+        type: CHARACTER_DELETE_COMPLETED,
+        payload: id
+    }
+}
+
 export function login(user, history) {
     return function (dispatch) {
         dispatch(requestConnection(user.username));
@@ -112,7 +129,7 @@ export function createUser(user, history) {
     }
 }
 
-export function getCharacters(auth) {
+export function getCharacters(token) {
     return function (dispatch) {
         dispatch(requestAllCharacters());
         return fetch("http://localhost:8080/api/characters", {
@@ -120,7 +137,7 @@ export function getCharacters(auth) {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json; charset=utf-8",
-                "Authorization": "Bearer " + auth
+                "Authorization": "Bearer " + token
             }
         })
         .then(response => {
@@ -135,5 +152,28 @@ export function getCharacters(auth) {
         // });
         // eventSource.addEventListener("open", (e) => dispatch(charactersFetched(characters)));
         // eventSource.addEventListener("error", (e) => dispatch(requestCharactersFailed()));
+    }
+}
+
+export function deleteCharacter(character, token) {
+    return function(dispatch) {
+        dispatch(requestDeleteCharacter(character.id))
+        return fetch(`http://localhost:8080/api/characters/${character.id}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + token
+            }
+        })
+        .then(response => {
+            if (response.status === 200) {
+                toast(`Character with name ${character.name} has been deleted.`, {type: ToastType.SUCCESS})
+                return response;
+            }
+            toast(`Could not delete Character with name ${character.name}.`, {type: ToastType.ERROR})
+        }, __ => toast("An error occurred.", {type: ToastType.ERROR}))
+        .then(__ => dispatch(characterDeleted(character.id)))
+        .catch(console.error)
     }
 }

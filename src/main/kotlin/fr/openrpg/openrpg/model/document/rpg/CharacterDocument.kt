@@ -1,16 +1,18 @@
 package fr.openrpg.openrpg.model.document.rpg
 
-import org.springframework.data.mongodb.core.mapping.Document
-
 import fr.openrpg.openrpg.model.domain.rpg.Character
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
 import kotlin.reflect.full.memberProperties
 
 @Document("characters")
 data class CharacterDocument(
-        val author: String,
-        val name: String,
-        val aspects: List<String>,
-        val phases: List<String>
+    @Id
+    val id: String,
+    val author: String,
+    val name: String,
+    val aspects: List<String>,
+    val phases: List<String>
 )
 
 fun CharacterDocument.toCharacter() = with(::Character) {

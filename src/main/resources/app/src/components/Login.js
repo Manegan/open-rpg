@@ -31,7 +31,7 @@ class Login extends React.Component {
 
     render() {
         return (
-        <div className="container">
+        <div className="container-fluid">
             <div className="card m-auto shadow">
                 <div className="card-header">Login</div>
                 <div className="card-body">
@@ -39,18 +39,18 @@ class Login extends React.Component {
                         <div className="row">
                             <div className="col-10">
                                 <div className="form-group">
-                                    <label htmlFor="inputUsername">Username</label>
+                                    <label htmlFor="username">Username</label>
                                     <input type="text"
-                                           id="inputUsername"
+                                           id="username"
                                            className="form-control"
                                            name="username"
                                            value={this.state.username}
                                            onChange={(e) => this.setState({username: e.target.value})}/>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="inputPassword">Password</label>
+                                    <label htmlFor="password">Password</label>
                                     <input type="password"
-                                           id="inputPassword"
+                                           id="password"
                                            className="form-control"
                                            name="password"
                                            value={this.state.password}

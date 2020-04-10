@@ -55,7 +55,7 @@ class CreateAccount extends React.Component {
     render() {
         return (
             <div className="container-fluid">
-                <div className="card w-50 m-auto shadow">
+                <div className="card w- m-auto shadow">
                     <div className="card-header">Create a new account</div>
                     <div className="card-body">
                         <form onSubmit={this.createUsername.bind(this)}>
