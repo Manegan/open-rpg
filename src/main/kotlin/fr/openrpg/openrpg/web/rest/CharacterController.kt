@@ -2,21 +2,17 @@ package fr.openrpg.openrpg.web.rest
 
 import fr.openrpg.openrpg.exception.DocumentNotFoundException
 import fr.openrpg.openrpg.model.domain.rpg.Character
-import fr.openrpg.openrpg.security.Role
 import fr.openrpg.openrpg.service.CharacterService
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.security.Principal
-import java.util.*
 
 @RestController
 @RequestMapping("/api/characters")
@@ -29,7 +25,11 @@ class CharacterController(val service: CharacterService) {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun findCharacters(principal: Principal): Flux<Character> = service.findAll(principal.name)
+    fun findCharacters(
+            @RequestParam("page") page: Int,
+            @RequestParam("size") size: Int,
+            principal: Principal
+    ): Flux<Character> = service.findAll(principal.name, PageRequest.of(page, size))
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -37,9 +37,7 @@ class CharacterController(val service: CharacterService) {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun deleteCharacterById(@PathVariable id: String, principal: Principal): Mono<*> {
-        return service.deleteById(id, principal.name)
-    }
+    fun deleteCharacterById(@PathVariable id: String, principal: Principal): Mono<*> = service.deleteById(id, principal.name)
 
 
     @ExceptionHandler(DocumentNotFoundException::class)

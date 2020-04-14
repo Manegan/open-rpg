@@ -119,7 +119,7 @@ export function createUser(user, history) {
             })
             .then(response => {
                 if (response.status === 201) {
-                    toast("User " + user.username + " created.", {type: toast.TYPE.SUCCESS});
+                    toast("Your account has been successfully created.", {type: toast.TYPE.SUCCESS});
                     return response.json();
                 }
                 toast("User " + user.username + " already exist.", {type: toast.TYPE.ERROR});
@@ -129,10 +129,10 @@ export function createUser(user, history) {
     }
 }
 
-export function getCharacters(token) {
+export function getCharacters(token, page, size) {
     return function (dispatch) {
         dispatch(requestAllCharacters());
-        return fetch("http://localhost:8080/api/characters", {
+        return fetch(`http://localhost:8080/api/characters?size=${size}&page=${page}`, {
             method: "GET",
             headers: {
                 "Accept": "application/json",
@@ -145,13 +145,6 @@ export function getCharacters(token) {
         }, __ => toast("An error occurred.", {type: toast.TYPE.ERROR}))
         .then(response => dispatch(charactersFetched(response)))
         .catch(console.error)
-        // const characters = [];
-        // const eventSource = new EventSource("http://localhost:8080/api/characters", {withCredentials: true});
-        // eventSource.addEventListener("message", (e) => {
-        //     characters.push(e.data);
-        // });
-        // eventSource.addEventListener("open", (e) => dispatch(charactersFetched(characters)));
-        // eventSource.addEventListener("error", (e) => dispatch(requestCharactersFailed()));
     }
 }
 

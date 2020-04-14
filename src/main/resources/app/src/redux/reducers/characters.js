@@ -2,23 +2,31 @@ import {
     CHARACTER_DELETE_COMPLETED,
     CHARACTER_DELETE_REQUESTED,
     CHARACTER_FETCH_COMPLETED,
-    CHARACTER_FETCH_FAILED,
+    CHARACTER_FETCH_FAILED, CHARACTER_FETCH_REQUESTED,
     DISCONNECTED
 } from "../actionTypes";
 
 const initialState = {
-    characters: []
+    characters: [],
+    loading: false
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case CHARACTER_FETCH_REQUESTED:
+            return Object.assign({}, state, {
+                characters: [],
+                loading: true
+            });
         case CHARACTER_FETCH_COMPLETED:
             return Object.assign({}, state, {
-                characters: action.payload || []
+                characters: action.payload || [],
+                loading: false
             });
         case DISCONNECTED || CHARACTER_FETCH_FAILED:
             return Object.assign({}, state, {
-                characters: []
+                characters: [],
+                loading: false
             });
         case CHARACTER_DELETE_REQUESTED:
             return state;

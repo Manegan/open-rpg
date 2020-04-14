@@ -2,6 +2,7 @@ package fr.openrpg.openrpg.model.domain.rpg
 
 import fr.openrpg.openrpg.model.document.rpg.CharacterDocument
 import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 import kotlin.reflect.full.memberProperties
 
@@ -12,7 +13,9 @@ data class Character(
     @get:Size(min=3,max=3)
     val aspects: List<String>,
     @get:Size(min=3,max=3)
-    val phases: List<String>
+    val phases: List<String>,
+    @get:NotNull
+    val skills: List<Skill>
 )
 
 fun Character.toCharacterDocument(username: String) = with(::CharacterDocument) {

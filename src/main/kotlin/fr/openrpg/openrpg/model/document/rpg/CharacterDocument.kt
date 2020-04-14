@@ -1,6 +1,7 @@
 package fr.openrpg.openrpg.model.document.rpg
 
 import fr.openrpg.openrpg.model.domain.rpg.Character
+import fr.openrpg.openrpg.model.domain.rpg.Skill
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import kotlin.reflect.full.memberProperties
@@ -12,7 +13,8 @@ data class CharacterDocument(
     val author: String,
     val name: String,
     val aspects: List<String>,
-    val phases: List<String>
+    val phases: List<String>,
+    val skills: List<Skill>
 )
 
 fun CharacterDocument.toCharacter() = with(::Character) {

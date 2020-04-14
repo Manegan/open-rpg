@@ -6,7 +6,7 @@ import fr.openrpg.openrpg.model.document.rpg.toCharacter
 import fr.openrpg.openrpg.model.domain.rpg.Character
 import fr.openrpg.openrpg.model.domain.rpg.toCharacterDocument
 import fr.openrpg.openrpg.repository.CharacterRepository
-import org.bson.types.ObjectId
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
@@ -18,7 +18,7 @@ class CharacterService(val repository: CharacterRepository) {
     fun save(character: Character, username: String): Mono<Character> =
         repository.save(character.toCharacterDocument(username)).map { it.toCharacter() }
 
-    fun findAll(name: String): Flux<Character> = repository.findAllByAuthor(name).map { it.toCharacter() }
+    fun findAll(name: String, pageable: Pageable): Flux<Character> = repository.findAllByAuthor(name, pageable).map { it.toCharacter() }
 
     fun findById(id: String, name: String?): Mono<*> =
         repository.findById(id)
