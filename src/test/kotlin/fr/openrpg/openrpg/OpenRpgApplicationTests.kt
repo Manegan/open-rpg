@@ -1,4 +1,4 @@
-package fr.openrpg.openrpg
+package fr.openrpg
 
 import org.junit.Test
 import org.junit.runner.RunWith
