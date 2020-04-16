@@ -10,7 +10,8 @@ import {
     USER_CREATION_COMPLETED,
     USER_CREATION_REQUESTED
 } from "./actionTypes";
-import {toast, ToastType} from 'react-toastify';
+import {TOAST_ERROR, TOAST_SUCCESS} from '../utils/toast.options.util';
+import {toast} from 'react-toastify';
 
 function requestConnection(user) {
     return {
@@ -94,11 +95,11 @@ export function login(user, history) {
             })
             .then(response => {
                 if (response.status === 200) {
-                    toast("Successfully logged in.", {type: toast.TYPE.SUCCESS});
+                    toast("Successfully logged in.", TOAST_SUCCESS);
                     return response.json();
                 }
-                toast("Wrong username or password.", {type: toast.TYPE.ERROR})
-            }, __ => toast("An error occurred.", {type: toast.TYPE.ERROR}))
+                toast("Wrong username or password.", TOAST_ERROR)
+            }, __ => toast("An error occurred.", TOAST_ERROR))
             .then(json => dispatch(completeConnection(json.token, history)))
             .catch(console.log);
     }
@@ -119,11 +120,11 @@ export function createUser(user, history) {
             })
             .then(response => {
                 if (response.status === 201) {
-                    toast("Your account has been successfully created.", {type: toast.TYPE.SUCCESS});
+                    toast("Your account has been successfully created.", TOAST_SUCCESS);
                     return response.json();
                 }
-                toast("User " + user.username + " already exist.", {type: toast.TYPE.ERROR});
-            }, __ => toast("An error occurred.", {type: toast.TYPE.ERROR}))
+                toast("User " + user.username + " already exist.", TOAST_ERROR);
+            }, __ => toast("An error occurred.", TOAST_ERROR))
             .then(response => dispatch(userCreated(response, history)))
             .catch(console.error);
     }
@@ -142,7 +143,10 @@ export function getCharacters(token, page, size) {
         })
         .then(response => {
             if (response.status === 200) return response.json()
-        }, __ => toast("An error occurred.", {type: toast.TYPE.ERROR}))
+            dispatch(requestCharactersFailed())
+            if (response.status === 401) toast("Could not fetch characters, UNAUTHORIZED.", TOAST_ERROR)
+            if (response.status === 403) toast("Access FORBIDDEN.", TOAST_ERROR)
+        }, __ => toast("An error occurred.", TOAST_ERROR))
         .then(response => dispatch(charactersFetched(response)))
         .catch(console.error)
     }
@@ -161,11 +165,11 @@ export function deleteCharacter(character, token) {
         })
         .then(response => {
             if (response.status === 200) {
-                toast(`Character with name ${character.name} has been deleted.`, {type: ToastType.SUCCESS})
+                toast(`Character with name ${character.name} has been deleted.`, TOAST_SUCCESS)
                 return response;
             }
-            toast(`Could not delete Character with name ${character.name}.`, {type: ToastType.ERROR})
-        }, __ => toast("An error occurred.", {type: ToastType.ERROR}))
+            toast(`Could not delete Character with name ${character.name}.`, TOAST_ERROR)
+        }, __ => toast("An error occurred.", TOAST_ERROR))
         .then(__ => dispatch(characterDeleted(character.id)))
         .catch(console.error)
     }

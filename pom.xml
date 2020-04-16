@@ -49,11 +49,6 @@
 			<artifactId>kotlin-maven-noarg</artifactId>
 			<version>${kotlin.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.mongobee</groupId>
-			<artifactId>mongobee</artifactId>
-			<version>0.13</version>
-		</dependency>
 
 		<!-- JWT -->
 		<dependency>
@@ -103,7 +98,6 @@
 					</args>
 					<compilerPlugins>
 						<plugin>spring</plugin>
-						<plugin>jpa</plugin>
 					</compilerPlugins>
 				</configuration>
 				<dependencies>

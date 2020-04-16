@@ -8,7 +8,8 @@ import {
 
 const initialState = {
     characters: [],
-    loading: false
+    loading: false,
+    error: null
 };
 
 export default function (state = initialState, action) {
@@ -23,11 +24,17 @@ export default function (state = initialState, action) {
                 characters: action.payload || [],
                 loading: false
             });
-        case DISCONNECTED || CHARACTER_FETCH_FAILED:
+        case DISCONNECTED:
             return Object.assign({}, state, {
                 characters: [],
                 loading: false
             });
+        case CHARACTER_FETCH_FAILED:
+            return Object.assign({}, state, {
+                characters: [],
+                loading: false,
+                error: "Could not fetch characters... Try again later."
+            })
         case CHARACTER_DELETE_REQUESTED:
             return state;
         case CHARACTER_DELETE_COMPLETED:

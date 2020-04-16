@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails
 data class UserDocument(private var username: String?) : UserDetails {
     private var password: String? = null
 
-    private var enabled: Boolean? = null
-
     private var roles: List<Role>? = null
 
     private var email: String? = null
@@ -40,7 +38,7 @@ data class UserDocument(private var username: String?) : UserDetails {
     }
 
     override fun isEnabled(): Boolean {
-        return this.enabled!!
+        return false
     }
 
     override fun getAuthorities(): Collection<GrantedAuthority> {

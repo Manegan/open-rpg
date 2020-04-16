@@ -5,8 +5,11 @@ import {disconnect} from "../redux/actions";
 
 class Navbar extends React.Component {
 
-    disconnect() {
-        this.props.onDisconnect(this.props.history);
+    constructor(props) {
+        super(props)
+        this.state = {
+            menu: false
+        }
     }
 
     generateLinks() {
@@ -24,21 +27,27 @@ class Navbar extends React.Component {
         if (!this.props.isAuthenticated) {
             return <Link to="/login" className="nav-link">Login</Link>;
         }
-        return [
-            <span key="username" className="pr-2">Hello, {this.props.username}!{' '}</span>,
-            <button type="button"
+        return <button type="button"
                     className="btn btn-primary"
-                    onClick={this.disconnect.bind(this)}
+                    onClick={() => this.props.onDisconnect(this.props.history)}
                     key="disconnect">Disconnect
-            </button>
-        ];
+            </button>;
     }
 
     render() {
+        const show = this.state.menu ? "show" : ""
+
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light row shadow-sm">
-                <a className="navbar-brand" href="#">OpenRpg</a>
-                <div className="collapse navbar-collapse">
+                <span className="navbar-brand">OpenRpg</span>
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    onClick={() => this.setState({menu: !this.state.menu})}
+                >
+                    <span className="navbar-toggler-icon" />
+                </button>
+                <div className={"collapse navbar-collapse " + show} id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
                             <Link to="/" className="nav-link">Home</Link>
