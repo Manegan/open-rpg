@@ -1,0 +1,62 @@
+[
+  {
+    "author": "test",
+    "name": "toto1",
+    "aspects": ["osef"],
+    "phases": ["osef"],
+    "skills": [
+      {
+        "skillType": "ATHLETICS",
+        "skillValue": 1
+      }
+    ]
+  },
+  {
+    "author": "test",
+    "name": "toto2",
+    "aspects": ["osef"],
+    "phases": ["osef"],
+    "skills": [
+      {
+        "skillType": "ATHLETICS",
+        "skillValue": 1
+      }
+    ]
+  },
+  {
+    "author": "test",
+    "name": "toto3",
+    "aspects": ["osef"],
+    "phases": ["osef"],
+    "skills": [
+      {
+        "skillType": "ATHLETICS",
+        "skillValue": 1
+      }
+    ]
+  },
+  {
+    "author": "test",
+    "name": "toto4",
+    "aspects": ["osef"],
+    "phases": ["osef"],
+    "skills": [
+      {
+        "skillType": "ATHLETICS",
+        "skillValue": 1
+      }
+    ]
+  },
+  {
+    "author": "test",
+    "name": "toto5",
+    "aspects": ["osef"],
+    "phases": ["osef"],
+    "skills": [
+      {
+        "skillType": "ATHLETICS",
+        "skillValue": 1
+      }
+    ]
+  }
+]

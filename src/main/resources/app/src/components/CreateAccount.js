@@ -1,10 +1,11 @@
 import React from 'react';
 import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 import { createUser } from "../redux/actions"
 
 class CreateAccount extends React.Component {
 
-    mailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     constructor(props) {
         super(props);
@@ -30,34 +31,34 @@ class CreateAccount extends React.Component {
     }
 
     showError() {
-        console.log(this.emailError);
         return this.emailError ? (<div className="alert alert-danger" role="alert">Invalid Email format</div>): '';
     }
 
     createUsername(ev) {
         ev.preventDefault();
-        this.props.createUser({
-            username: this.state.username,
-            password: this.state.password,
-            email: this.state.email
-        });
-        this.setState({
-            username: "",
-            password: "",
-            email: "",
-
-            emailIsValid: false,
-            emailIsDirty: false
-        })
+        if (this.state.username !== "" && this.state.password !== "" && this.state.email !== "" && !this.emailError) {
+            this.props.createUser({
+                username: this.state.username,
+                password: this.state.password,
+                email: this.state.email
+            }, this.props.history);
+            this.setState({
+                username: "",
+                password: "",
+                email: "",
+                emailIsValid: false,
+                emailIsDirty: false
+            })
+        }
     }
 
     render() {
         return (
             <div className="container-fluid">
-                <div className="card w-50 m-auto shadow">
+                <div className="card w- m-auto shadow">
                     <div className="card-header">Create a new account</div>
                     <div className="card-body">
-                        <form>
+                        <form onSubmit={this.createUsername.bind(this)}>
                             <div className="row">
                                 <div className="col-10">
                                     <div className="form-group">
@@ -92,10 +93,9 @@ class CreateAccount extends React.Component {
                                 </div>
                                 <div className="col-2">
                                     <div className="form-group" style={{ bottom: 0 + "px", position: "absolute" }}>
-                                        <button type="button" className="btn btn-primary"
-                                                onClick={this.createUsername.bind(this)}
-                                                onSubmit={e => e.preventDefault()}
-                                                disabled={this.state.username === "" || this.state.password === "" || this.state.email === "" || this.emailError}>Submit</button>
+                                        <button type="submit" className="btn btn-primary"
+                                                disabled={this.state.username === "" || this.state.password === "" || this.state.email === "" || this.emailError}
+                                        >Submit</button>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@ const mapStateToProps = state => {
     return {isAuthenticating: state.auth ? state.auth.isAuthenticating : false}
 };
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     {createUser}
-)(CreateAccount);
+)(CreateAccount));

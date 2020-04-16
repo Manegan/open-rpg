@@ -1,39 +1,53 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {disconnect} from "../redux/actions";
 
 class Navbar extends React.Component {
 
-    disconnect() {
-        this.props.onDisconnect();
+    constructor(props) {
+        super(props)
+        this.state = {
+            menu: false
+        }
     }
 
     generateLinks() {
         if (!this.props.isAuthenticated) {
             return null;
         }
-        return null;
+        return [
+            <li className="nav-item">
+                <Link to="/my-characters" className="nav-link">My Characters</Link>
+            </li>
+        ];
     }
 
     generateLogin() {
         if (!this.props.isAuthenticated) {
             return <Link to="/login" className="nav-link">Login</Link>;
         }
-        let username = this.props.username;
-        return [
-            <span>Hello, {username}!&nbsp;</span>,
-            <button type="button"
+        return <button type="button"
                     className="btn btn-primary"
-                    onClick={this.disconnect.bind(this)}>Disconnect
-            </button>];
+                    onClick={() => this.props.onDisconnect(this.props.history)}
+                    key="disconnect">Disconnect
+            </button>;
     }
 
     render() {
+        const show = this.state.menu ? "show" : ""
+
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light row shadow-sm">
-                <a className="navbar-brand" href="#">OpenRpg</a>
-                <div className="collapse navbar-collapse">
+                <span className="navbar-brand">OpenRpg</span>
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    onClick={() => this.setState({menu: !this.state.menu})}
+                >
+                    <span className="navbar-toggler-icon" />
+                </button>
+                <div className={"collapse navbar-collapse " + show} id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
                             <Link to="/" className="nav-link">Home</Link>
@@ -56,13 +70,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onDisconnect: () => {
-            dispatch(disconnect());
+        onDisconnect: (history) => {
+            dispatch(disconnect(history));
         }
     }
 };
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(Navbar);
+)(Navbar));
