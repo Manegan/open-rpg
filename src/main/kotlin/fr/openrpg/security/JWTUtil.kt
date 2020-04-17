@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.Serializable
+import java.security.KeyPairGenerator
 import java.util.*
 
 

@@ -1,4 +1,6 @@
 import {
+    CHARACTER_CREATION_COMPLETED,
+    CHARACTER_CREATION_REQUESTED,
     CHARACTER_DELETE_COMPLETED,
     CHARACTER_DELETE_REQUESTED,
     CHARACTER_FETCH_COMPLETED,
@@ -65,6 +67,19 @@ function charactersFetched(characters) {
 function requestCharactersFailed() {
     return {
         type: CHARACTER_FETCH_FAILED
+    }
+}
+
+function requestCreateCharacter() {
+    return {
+        type: CHARACTER_CREATION_REQUESTED
+    }
+}
+
+function characterCreated(character) {
+    return {
+        type: CHARACTER_CREATION_COMPLETED,
+        payload: character
     }
 }
 
@@ -152,15 +167,39 @@ export function getCharacters(token, page, size) {
     }
 }
 
+export function createCharacter(character, token) {
+    return function (dispatch) {
+        dispatch(requestCreateCharacter())
+        return fetch('http://localhost:8080/api/characters', {
+            method: "POST",
+            body: JSON.stringify(character),
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json; charset=utf-8",
+                Authorization: "Bearer " + token
+            }
+        })
+        .then(response => {
+            if (response.status === 201) {
+                toast(`Character ${character.name} created!`, TOAST_SUCCESS)
+                return response.json()
+            }
+            toast("An error occurred.", TOAST_ERROR)
+        })
+        .then(response => dispatch(characterCreated(response)))
+        .catch(console.error)
+    }
+}
+
 export function deleteCharacter(character, token) {
     return function(dispatch) {
         dispatch(requestDeleteCharacter(character.id))
         return fetch(`http://localhost:8080/api/characters/${character.id}`, {
             method: "DELETE",
             headers: {
-                "Accept": "application/json",
+                Accept: "application/json",
                 "Content-Type": "application/json; charset=utf-8",
-                "Authorization": "Bearer " + token
+                Authorization: "Bearer " + token
             }
         })
         .then(response => {
