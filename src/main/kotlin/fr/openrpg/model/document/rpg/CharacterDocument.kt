@@ -14,12 +14,14 @@ data class CharacterDocument(
     val name: String,
     val aspects: List<String>,
     val phases: List<String>,
-    val skills: List<Skill>
+    val skills: List<Skill>,
+    val avatar: String?,
+    val avatarImageType: String?
 )
 
 fun CharacterDocument.toCharacter() = with(::Character) {
     val propertiesByName = CharacterDocument::class.memberProperties.associateBy { it.name }
-    callBy(parameters.associate { parameter ->
-        parameter to propertiesByName[parameter.name]?.get(this@toCharacter)
+    callBy(parameters.associateWith { parameter ->
+        propertiesByName[parameter.name]?.get(this@toCharacter)
     })
 }

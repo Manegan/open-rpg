@@ -9,7 +9,7 @@ import {
 const initialState = {
     characters: [],
     loading: false,
-    error: null
+    error: undefined
 };
 
 export default function (state = initialState, action) {
@@ -17,17 +17,20 @@ export default function (state = initialState, action) {
         case CHARACTER_FETCH_REQUESTED:
             return Object.assign({}, state, {
                 characters: [],
-                loading: true
+                loading: true,
+                error: undefined
             });
         case CHARACTER_FETCH_COMPLETED:
             return Object.assign({}, state, {
                 characters: action.payload || [],
-                loading: false
+                loading: false,
+                error: undefined
             });
         case DISCONNECTED:
             return Object.assign({}, state, {
                 characters: [],
-                loading: false
+                loading: false,
+                error: undefined
             });
         case CHARACTER_FETCH_FAILED:
             return Object.assign({}, state, {
@@ -36,10 +39,15 @@ export default function (state = initialState, action) {
                 error: "Could not fetch characters... Try again later."
             })
         case CHARACTER_DELETE_REQUESTED:
-            return state;
+            return Object.assign({}, state, {
+                loading: true,
+                error: undefined
+            });
         case CHARACTER_DELETE_COMPLETED:
             return Object.assign({}, state, {
-                characters: state.characters.filter(it => it.id !== action.payload)
+                characters: state.characters.filter(it => it.id !== action.payload),
+                loading: false,
+                error: undefined
             })
         default: return state;
     }

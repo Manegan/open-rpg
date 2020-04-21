@@ -12,6 +12,7 @@ import * as serviceWorker from './serviceWorker';
 import reducers from './redux/reducers';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-image-crop/dist/ReactCrop.css';
 
 fontawesome.library.add(faTrash, faSpinner)
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import {Modal, Button} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {deleteCharacter, getCharacters} from '../redux/actions';
-import {Modal, Button} from 'react-bootstrap';
 
 class Characters extends React.Component {
     constructor(props) {
@@ -61,7 +62,16 @@ class Characters extends React.Component {
         } else {
             return this.props.characters.map((char, i) =>
                 (<div className="list-group-item d-flex justify-content-between" key={char.name + i}>
-                    <div>{char.name}</div>
+                    <div className="d-flex">
+                        <span>{char.name}</span>
+                        <div>
+                            <img src={char.avatarBlob ? char.avatarBlob : ""}
+                                 style={{
+                                     objectFit: "cover",
+                                     maxHeight: "80px"
+                                 }}/>
+                        </div>
+                    </div>
                     <Button
                         variant="danger"
                         onClick={() => this.handleShow(i)}>
@@ -124,6 +134,13 @@ class Characters extends React.Component {
                     </Button>
                 </div>
                 {this.renderCharacters()}
+                <div className="list-group-item d-flex justify-content-between">
+                    <Button
+                        variant="primary"
+                        onClick={() => this.props.history.push("/new-character")}>
+                        &#43;
+                    </Button>
+                </div>
             </div>
         </div>;
     }
@@ -138,4 +155,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, {getCharacters, deleteCharacter})(Characters);
+export default withRouter(connect(mapStateToProps, {getCharacters, deleteCharacter})(Characters));

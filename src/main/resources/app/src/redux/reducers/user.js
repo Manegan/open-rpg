@@ -7,20 +7,25 @@ const initialState = {
 };
 
 export default function user(state = initialState, action) {
-    console.log(action);
     switch(action.type) {
         case USER_CREATION_REQUESTED: {
             return Object.assign({}, state, {
-                creationPending: true
+                creationPending: true,
+                creationSucceeded: false,
+                creationFailed: false
             });
         }
         case USER_CREATION_COMPLETED: {
             return Object.assign({}, state, {
-                creationSucceeded: true
+                creationPending: false,
+                creationSucceeded: true,
+                creationFailed: false
             });
         }
         case USER_CREATION_FAILED: {
             return Object.assign({}, state, {
+                creationPending: false,
+                creationSucceeded: false,
                 creationFailed: true
             });
         }

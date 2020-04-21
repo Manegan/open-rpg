@@ -14,6 +14,7 @@ import {
 } from "./actionTypes";
 import {TOAST_ERROR, TOAST_SUCCESS} from '../utils/toast.options.util';
 import {toast} from 'react-toastify';
+import {b64toBlob} from "../utils/b64.util";
 
 function requestConnection(user) {
     return {
@@ -162,14 +163,43 @@ export function getCharacters(token, page, size) {
             if (response.status === 401) toast("Could not fetch characters, UNAUTHORIZED.", TOAST_ERROR)
             if (response.status === 403) toast("Access FORBIDDEN.", TOAST_ERROR)
         }, __ => toast("An error occurred.", TOAST_ERROR))
-        .then(response => dispatch(charactersFetched(response)))
+        .then(response => {
+            response.forEach(c => {
+                if (c.avatar && c.avatarImageType) {
+                    c.avatarBlob = URL.createObjectURL(b64toBlob(c.avatar, c.avatarImageType))
+                }
+            })
+            dispatch(charactersFetched(response));
+        })
         .catch(console.error)
     }
 }
 
 export function createCharacter(character, token) {
-    return function (dispatch) {
+    return async function (dispatch) {
         dispatch(requestCreateCharacter())
+
+        const blob = await fetch(character.avatar)
+            .then(response => response.blob())
+
+        let byteArray = await new Promise(res =>{
+            const reader = new FileReader()
+            reader.onload = () => {
+                res(btoa(
+                    new Uint8Array(reader.result)
+                        .reduce((data, byte) => {
+                            return data + String.fromCharCode(byte);
+                    }, "")
+                ));
+            };
+            reader.readAsArrayBuffer(blob)
+        })
+
+        character = Object.assign({}, character, {
+            avatar: byteArray,
+            avatarImageType: blob.type
+        })
+
         return fetch('http://localhost:8080/api/characters', {
             method: "POST",
             body: JSON.stringify(character),
